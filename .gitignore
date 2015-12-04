@@ -1,0 +1,7 @@
+*.dll
+*.pdb
+*.xml
+*.suo
+*TemporaryGeneratedFile_*
+obj
+bin

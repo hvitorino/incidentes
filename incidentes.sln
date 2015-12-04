@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrelloWrapper", "TrelloWrapper\TrelloWrapper.csproj", "{DACE2BD1-7924-41B8-8ADF-45410CA44849}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrelloWrapper.Test", "TrelloWrapper.Test\TrelloWrapper.Test.csproj", "{79E38D62-752D-4AB0-AE3B-4633B7792634}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DACE2BD1-7924-41B8-8ADF-45410CA44849}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DACE2BD1-7924-41B8-8ADF-45410CA44849}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DACE2BD1-7924-41B8-8ADF-45410CA44849}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DACE2BD1-7924-41B8-8ADF-45410CA44849}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79E38D62-752D-4AB0-AE3B-4633B7792634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79E38D62-752D-4AB0-AE3B-4633B7792634}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79E38D62-752D-4AB0-AE3B-4633B7792634}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79E38D62-752D-4AB0-AE3B-4633B7792634}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
