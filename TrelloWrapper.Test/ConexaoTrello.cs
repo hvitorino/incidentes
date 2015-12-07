@@ -8,14 +8,14 @@ namespace TrelloWrapper.Test
     public class ConexaoTrello
     {
         [Test]
-        public void ConetarTrelloNet()
+        public void ConectarTrelloNet()
         {
             var trello = new Trello("950a4f35f078102cc55be50178a55181");
-            trello.Authorize("7fd6a41ed8d4b253b9f49465f025898b980b103ddea5a4bcbee243230d9e9783");
+            trello.Authorize("6b7d13c413e8d89cd85e27f1e094f10d879f44c5f18b27f8c594d4cd9b051e9c");
 
-            foreach (var team in trello.Organizations.Search("S160"))
+            foreach (var board in trello.Boards.Search("incidentes"))
             {
-                Debug.WriteLine(team.DisplayName);
+                Debug.WriteLine(board.Name);
             }
         }
     }
