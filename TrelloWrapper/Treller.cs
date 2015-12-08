@@ -31,7 +31,6 @@ namespace TrelloWrapper
 
             trello.Cards.AddLabel(cartaoCriado, Color.Red);
             trello.Cards.AddLabel(cartaoCriado, Color.Green);
-            trello.Cards.ChangeDueDate(cartaoCriado, incidente.DataSubmissao);
 
             return new Cartao
             {

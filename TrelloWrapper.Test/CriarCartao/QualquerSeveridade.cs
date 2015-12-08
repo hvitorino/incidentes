@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 
 namespace TrelloWrapper.Test.CriarCartao
 {
@@ -9,7 +10,8 @@ namespace TrelloWrapper.Test.CriarCartao
         private Incidente incidente;
         private Treller treller;
 
-        public QualquerSeveridade()
+        [TestFixtureSetUp]
+        public void Cenario()
         {
             treller = new Treller();
 
@@ -18,6 +20,7 @@ namespace TrelloWrapper.Test.CriarCartao
                 Id = "GSOL00000001",
                 Severidade = NivelSeveridade.Alta,
                 Sistema = "S160"
+                DataSubmissao = DateTime.Now
             };
 
             cartao = treller.cadastrarIncidente(incidente);

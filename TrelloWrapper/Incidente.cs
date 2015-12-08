@@ -4,9 +4,9 @@ namespace TrelloWrapper
 {
     public class Incidente
     {
-        public DateTime DataSubmissao { get; internal set; }
         public string Id { get; set; }
-        public object Severidade { get; set; }
+        public NivelSeveridade Severidade { get; set; }
         public string Sistema { get; set; }
+        public DateTime DataSubmissao { get; set; }
     }
 }
