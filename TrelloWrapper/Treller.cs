@@ -13,10 +13,18 @@ namespace TrelloWrapper
 
         public Cartao cadastrarIncidente(Incidente incidente)
         {
+            var cartaoLocal = mapearIncidenteParaCartaoLocal(incidente);
+            enviarCartaoLocalParaTrello(cartaoLocal);
+
+            return cartaoLocal;
+        }
+
+        private void enviarCartaoLocalParaTrello(Cartao cartaoLocal)
+        {
             trello = new Trello(chave);
             trello.Authorize(token);
 
-            var equipeSistema = trello.Organizations.WithId(incidente.Sistema.ToLower());
+            var equipeSistema = trello.Organizations.WithId(cartaoLocal.Sistema.ToLower());
 
             var incidentes = trello.Boards.ForOrganization(equipeSistema)
                 .Where(board => board.Name.Equals("incidentes", StringComparison.OrdinalIgnoreCase))
@@ -26,18 +34,47 @@ namespace TrelloWrapper
                 .Where(lista => lista.Name.Equals("Submitted", StringComparison.OrdinalIgnoreCase))
                 .FirstOrDefault();
 
-            var novoCartao = new NewCard(incidente.Id + " - " + incidente.Severidade, new ListId(listaSubmitted.Id));
+            var novoCartao = new NewCard(cartaoLocal.Nome, new ListId(listaSubmitted.Id));
             var cartaoCriado = trello.Cards.Add(novoCartao);
 
-            trello.Cards.AddLabel(cartaoCriado, Color.Red);
-            trello.Cards.AddLabel(cartaoCriado, Color.Green);
+            adicionarEtiquetaDeSeveridade(cartaoLocal, cartaoCriado);
+            adicionarEtiquetaDePrazo(cartaoCriado);
+        }
 
+        private void adicionarEtiquetaDePrazo(Card cartaoCriado)
+        {
+            trello.Cards.AddLabel(cartaoCriado, Color.Green);
+        }
+
+        private void adicionarEtiquetaDeSeveridade(Cartao cartaoLocal, Card cartaoCriado)
+        {
+            if (cartaoLocal.Severidade == NivelSeveridade.Alta)
+            {
+                trello.Cards.AddLabel(cartaoCriado, Color.Red);
+            }
+        }
+
+        private Cartao mapearIncidenteParaCartaoLocal(Incidente incidente)
+        {
             return new Cartao
             {
+                Sistema = incidente.Sistema,
+                Nome = string.Format("{0} - {1}", incidente.Id, incidente.Severidade),
+                Severidade = incidente.Severidade,
                 EstadoSLA = SLA.Novo,
                 Lista = ListaEstado.Submitted,
-                Nome = incidente.Id + " - " + incidente.Severidade
+                PrazoFinalizacao = calcularPrazoFinalizacao(incidente)
             };
+        }
+
+        private DateTime calcularPrazoFinalizacao(Incidente incidente)
+        {
+            if(incidente.Severidade == NivelSeveridade.Alta)
+            {
+                return incidente.DataSubmissao.AddHours(2);
+            }
+
+            return incidente.DataSubmissao;
         }
     }
 }

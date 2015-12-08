@@ -10,7 +10,7 @@ namespace TrelloWrapper.Test.CriarCartao
         private Incidente incidente;
         private Treller treller;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Cenario()
         {
             treller = new Treller();
