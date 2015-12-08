@@ -58,6 +58,10 @@ namespace TrelloWrapper
             {
                 trello.Cards.AddLabel(cartaoTrello, Color.Red);
             }
+            else if (cartaoLocal.Severidade == NivelSeveridade.Baixa)
+            {
+                trello.Cards.AddLabel(cartaoTrello, Color.Blue);
+            }
         }
 
         private Cartao mapearIncidenteParaCartaoLocal(Incidente incidente)
@@ -78,6 +82,11 @@ namespace TrelloWrapper
             if(incidente.Severidade == NivelSeveridade.Alta)
             {
                 return incidente.DataSubmissao.AddHours(2);
+            }
+
+            if (incidente.Severidade == NivelSeveridade.Baixa)
+            {
+                return incidente.DataSubmissao.AddHours(48);
             }
 
             return incidente.DataSubmissao;

@@ -17,8 +17,8 @@ namespace TrelloWrapper.Test.CriarCartao
 
             incidente = new Incidente
             {
-                Id = "GSOL00000001",
-                Severidade = NivelSeveridade.Alta,
+                Id = "QUALQUER_SEVERIDADE",
+                Severidade = NivelSeveridade.Baixa,
                 Sistema = "S160",
                 DataSubmissao = DateTime.Now
             };
