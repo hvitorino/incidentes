@@ -35,22 +35,28 @@ namespace TrelloWrapper
                 .FirstOrDefault();
 
             var novoCartao = new NewCard(cartaoLocal.Nome, new ListId(listaSubmitted.Id));
-            var cartaoCriado = trello.Cards.Add(novoCartao);
+            var cartaoTrello = trello.Cards.Add(novoCartao);
 
-            adicionarEtiquetaDeSeveridade(cartaoLocal, cartaoCriado);
-            adicionarEtiquetaDePrazo(cartaoCriado);
+            adicionarEtiquetaDeSeveridade(cartaoLocal, cartaoTrello);
+            adicionarEtiquetaDePrazo(cartaoTrello);
+            definirPrazoDeFinalizacao(cartaoLocal, cartaoTrello);
         }
 
-        private void adicionarEtiquetaDePrazo(Card cartaoCriado)
+        private void definirPrazoDeFinalizacao(Cartao cartaoLocal, Card cartaoTrello)
         {
-            trello.Cards.AddLabel(cartaoCriado, Color.Green);
+            trello.Cards.ChangeDueDate(cartaoTrello, cartaoLocal.PrazoFinalizacao);
         }
 
-        private void adicionarEtiquetaDeSeveridade(Cartao cartaoLocal, Card cartaoCriado)
+        private void adicionarEtiquetaDePrazo(Card cartaoTrello)
+        {
+            trello.Cards.AddLabel(cartaoTrello, Color.Green);
+        }
+
+        private void adicionarEtiquetaDeSeveridade(Cartao cartaoLocal, Card cartaoTrello)
         {
             if (cartaoLocal.Severidade == NivelSeveridade.Alta)
             {
-                trello.Cards.AddLabel(cartaoCriado, Color.Red);
+                trello.Cards.AddLabel(cartaoTrello, Color.Red);
             }
         }
 
