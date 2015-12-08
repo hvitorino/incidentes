@@ -11,6 +11,12 @@ namespace TrelloWrapper
 
         private Trello trello;
 
+        public Treller()
+        {
+            trello = new Trello(chave);
+            trello.Authorize(token);
+        }
+
         public Cartao cadastrarIncidente(Incidente incidente)
         {
             var cartaoLocal = mapearIncidenteParaCartaoLocal(incidente);
@@ -19,11 +25,24 @@ namespace TrelloWrapper
             return cartaoLocal;
         }
 
+        public void moverParaEmInvestigacao(Cartao cartao)
+        {
+            var equipeSistema = trello.Organizations.WithId(cartao.Sistema.ToLower());
+
+            var incidentes = trello.Boards.ForOrganization(equipeSistema)
+                .Where(board => board.Name.Equals("incidentes", StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
+
+            var listaEmInvestigacao = trello.Lists.ForBoard(new BoardId(incidentes.GetBoardId()))
+                .Where(lista => lista.Name.Equals("Em_Investigacao", StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
+
+            var cartaoTrello = trello.Cards.WithShortId(cartao.ShortIdTrello, incidentes);
+            trello.Cards.Move(cartaoTrello, listaEmInvestigacao);
+        }
+
         private void enviarCartaoLocalParaTrello(Cartao cartaoLocal)
         {
-            trello = new Trello(chave);
-            trello.Authorize(token);
-
             var equipeSistema = trello.Organizations.WithId(cartaoLocal.Sistema.ToLower());
 
             var incidentes = trello.Boards.ForOrganization(equipeSistema)
@@ -36,6 +55,8 @@ namespace TrelloWrapper
 
             var novoCartao = new NewCard(cartaoLocal.Nome, new ListId(listaSubmitted.Id));
             var cartaoTrello = trello.Cards.Add(novoCartao);
+
+            cartaoLocal.ShortIdTrello = cartaoTrello.IdShort;
 
             adicionarEtiquetaDeSeveridade(cartaoLocal, cartaoTrello);
             adicionarEtiquetaDePrazo(cartaoTrello);

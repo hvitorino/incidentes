@@ -2,6 +2,7 @@
 {
     public enum ListaEstado
     {
-        Submitted
+        Submitted,
+        Em_Investigacao
     }
 }

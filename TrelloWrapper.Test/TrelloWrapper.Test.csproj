@@ -60,6 +60,7 @@
     <Compile Include="CriarCartao\SeveridadeAlta.cs" />
     <Compile Include="CriarCartao\SeveridadeBaixa.cs" />
     <Compile Include="CriarCartao\SeveridadeMedia.cs" />
+    <Compile Include="MoverCartaoSubmitted.cs" />
     <Compile Include="RecuperarTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
