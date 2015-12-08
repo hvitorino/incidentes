@@ -19,7 +19,7 @@ namespace TrelloWrapper.Test.CriarCartao
             {
                 Id = "GSOL00000001",
                 Severidade = NivelSeveridade.Alta,
-                Sistema = "S160"
+                Sistema = "S160",
                 DataSubmissao = DateTime.Now
             };
 
