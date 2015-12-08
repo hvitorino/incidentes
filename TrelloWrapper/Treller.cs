@@ -1,31 +1,24 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using TrelloNet;
 
-namespace TrelloWrapper.Test
+namespace TrelloWrapper
 {
-    [TestFixture]
-    public class CriarCartao
+    public class Treller
     {
         private const string chave = "950a4f35f078102cc55be50178a55181";
         private const string token = "6b7d13c413e8d89cd85e27f1e094f10d879f44c5f18b27f8c594d4cd9b051e9c";
 
         private Trello trello;
 
-        private string idGSOL = "GSOL0001";
-        private string severidade = "Alta";
-        private DateTime dataSubmissao = DateTime.Now;
-
-        public CriarCartao()
+        public Cartao cadastrarIncidente(Incidente incidente)
         {
             trello = new Trello(chave);
             trello.Authorize(token);
 
-            var s160 = trello.Organizations.WithId("s160");
+            var equipeSistema = trello.Organizations.WithId(incidente.Sistema.ToLower());
 
-            var incidentes = trello.Boards.ForOrganization(s160)
+            var incidentes = trello.Boards.ForOrganization(equipeSistema)
                 .Where(board => board.Name.Equals("incidentes", StringComparison.OrdinalIgnoreCase))
                 .FirstOrDefault();
 
@@ -33,16 +26,19 @@ namespace TrelloWrapper.Test
                 .Where(lista => lista.Name.Equals("Submitted", StringComparison.OrdinalIgnoreCase))
                 .FirstOrDefault();
 
-            var novoCartao = new NewCard(idGSOL + " - " + severidade, new ListId(listaSubmitted.Id));
+            var novoCartao = new NewCard(incidente.Id + " - " + incidente.Severidade, new ListId(listaSubmitted.Id));
             var cartaoCriado = trello.Cards.Add(novoCartao);
 
+            trello.Cards.AddLabel(cartaoCriado, Color.Red);
             trello.Cards.AddLabel(cartaoCriado, Color.Green);
-            trello.Cards.ChangeDueDate(cartaoCriado, dataSubmissao.AddHours(5));
-        }
+            trello.Cards.ChangeDueDate(cartaoCriado, incidente.DataSubmissao);
 
-        [Test]
-        public void DeveTerNomeESeveridadeNoTitulo()
-        {
+            return new Cartao
+            {
+                EstadoSLA = SLA.Novo,
+                Lista = ListaEstado.Submitted,
+                Nome = incidente.Id + " - " + incidente.Severidade
+            };
         }
     }
 }

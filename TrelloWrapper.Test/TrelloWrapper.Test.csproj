@@ -56,7 +56,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CriarCartao.cs" />
+    <Compile Include="CriarCartao\QualquerSeveridade.cs" />
+    <Compile Include="CriarCartao\SeveridadeAlta.cs" />
+    <Compile Include="CriarCartao\SeveridadeBaixa.cs" />
+    <Compile Include="CriarCartao\SeveridadeMedia.cs" />
     <Compile Include="RecuperarTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
