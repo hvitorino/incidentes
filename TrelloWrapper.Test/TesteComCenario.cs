@@ -8,7 +8,7 @@ namespace TrelloWrapper.Test
         [OneTimeTearDown]
         public void DesfazCenario()
         {
-            TrelloFactory.API.excluirIncidentes("s160");
+            //TrelloFactory.API.excluirIncidentes("s160");
         }
     }
 }

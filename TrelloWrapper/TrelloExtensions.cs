@@ -6,9 +6,9 @@ namespace TrelloWrapper
 {
     public static class TrelloExtensions
     {
-        public static void excluirIncidentes(this Trello trello, string nomeTime)
+        public static void excluirIncidentes(this Trello trello, string sistema)
         {
-            var time = trello.Organizations.WithId(nomeTime);
+            var time = trello.Organizations.WithId(sistema.ToLower());
 
             var incidentes = trello.Boards.ForOrganization(time)
                 .Where(board => board.Name.Equals("incidentes", StringComparison.OrdinalIgnoreCase))
@@ -24,12 +24,12 @@ namespace TrelloWrapper
 
         public static Organization recuperarTime(this Trello trello, string sistema)
         {
-            return trello.Organizations.WithId(sistema);
+            return trello.Organizations.WithId(sistema.ToLower());
         }
 
         public static Board recuperarQuadroIncidentes(this Trello trello, string sistema)
         {
-            var time = trello.recuperarTime(sistema);
+            var time = trello.recuperarTime(sistema.ToLower());
                 
             return trello.Boards.ForOrganization(time)
                 .Where(board => board.Name.Equals("incidentes", StringComparison.OrdinalIgnoreCase))
@@ -38,10 +38,12 @@ namespace TrelloWrapper
 
         public static List recuperarLista(this Trello trello, string sistema, ListaEstado lista)
         {
-            var quadro = trello.recuperarQuadroIncidentes(sistema);
+            var quadro = trello.recuperarQuadroIncidentes(sistema.ToLower());
+
+            var todasAsListas = trello.Lists.ForBoard(new BoardId(quadro.GetBoardId()));
 
             return trello.Lists.ForBoard(new BoardId(quadro.GetBoardId()))
-                .Where(l => l.Name.Equals(l.ToString(), StringComparison.OrdinalIgnoreCase))
+                .Where(l => l.Name.Equals(lista.ToString()))
                 .FirstOrDefault();
         }
     }

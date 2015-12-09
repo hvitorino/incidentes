@@ -27,30 +27,28 @@ namespace TrelloWrapper
 
         public void moverParaEmInvestigacao(Cartao cartao)
         {
-            var equipeSistema = trello.Organizations.WithId(cartao.Sistema.ToLower());
-
-            var incidentes = trello.Boards.ForOrganization(equipeSistema)
-                .Where(board => board.Name.Equals("incidentes", StringComparison.OrdinalIgnoreCase))
-                .FirstOrDefault();
-
-            var listaEmInvestigacao = trello.Lists.ForBoard(new BoardId(incidentes.GetBoardId()))
-                .Where(lista => lista.Name.Equals("Em_Investigacao", StringComparison.OrdinalIgnoreCase))
-                .FirstOrDefault();
-
-            var cartaoTrello = trello.Cards.WithShortId(cartao.ShortIdTrello, incidentes);
-            trello.Cards.Move(cartaoTrello, listaEmInvestigacao);
-
-            cartao.Lista = ListaEstado.Em_Investigacao;
+            moverCartao(cartao, ListaEstado.Em_Investigacao);
         }
 
         public void moverParaPendencia(Cartao cartao)
         {
-            throw new NotImplementedException();
+            moverCartao(cartao, ListaEstado.Pendencia);
         }
 
         public void moverParaEmResolucao(Cartao cartao)
         {
-            throw new NotImplementedException();
+            moverCartao(cartao, ListaEstado.Em_Resolucao);
+        }
+
+        private void moverCartao(Cartao cartao, ListaEstado lista)
+        {
+            var quadro = trello.recuperarQuadroIncidentes(cartao.Sistema);
+            var listaDestino = trello.recuperarLista(cartao.Sistema, lista);
+            var cartaoTrello = trello.Cards.WithShortId(cartao.ShortIdTrello, quadro);
+
+            trello.Cards.Move(cartaoTrello, listaDestino);
+
+            cartao.Lista = lista;
         }
 
         private void enviarCartaoLocalParaTrello(Cartao cartaoLocal)

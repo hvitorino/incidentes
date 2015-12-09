@@ -24,13 +24,13 @@ namespace TrelloWrapper.Test
             };
 
             cartao = treller.cadastrarIncidente(incidente);
-
-            treller.moverParaEmInvestigacao(cartao);
         }
 
         [Test]
         public void PossoMoverParaEmInvestigacao()
         {
+            treller.moverParaEmInvestigacao(cartao);
+
             Assert.That(cartao.Lista, Is.EqualTo(ListaEstado.Em_Investigacao));
         }
     }
