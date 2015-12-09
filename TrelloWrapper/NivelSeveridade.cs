@@ -3,6 +3,7 @@
     public enum NivelSeveridade
     {
         Baixa,
-        Alta
+        Alta,
+        Media
     }
 }

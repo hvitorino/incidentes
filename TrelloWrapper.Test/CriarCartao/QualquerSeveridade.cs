@@ -27,6 +27,12 @@ namespace TrelloWrapper.Test.CriarCartao
         }
 
         [Test]
+        public void DevePossuirOIdCurtoDoTrello()
+        {
+            Assert.That(cartao.ShortIdTrello, Is.GreaterThan(0));
+        }
+
+        [Test]
         public void DevePossuirEtiquetaNovoSLA()
         {
             Assert.That(cartao.EstadoSLA, Is.EqualTo(SLA.Novo));

@@ -79,6 +79,10 @@ namespace TrelloWrapper
             {
                 trello.Cards.AddLabel(cartaoTrello, Color.Red);
             }
+            else if (cartaoLocal.Severidade == NivelSeveridade.Media)
+            {
+                trello.Cards.AddLabel(cartaoTrello, Color.Orange);
+            }
             else if (cartaoLocal.Severidade == NivelSeveridade.Baixa)
             {
                 trello.Cards.AddLabel(cartaoTrello, Color.Blue);
