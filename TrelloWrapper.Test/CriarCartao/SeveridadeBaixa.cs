@@ -4,7 +4,7 @@ using System;
 namespace TrelloWrapper.Test.CriarCartao
 {
     [TestFixture]
-    public class SeveridadeBaixa
+    public class SeveridadeBaixa : TesteComCenario
     {
         private Cartao cartao;
         private Incidente incidente;

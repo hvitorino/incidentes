@@ -1,10 +1,10 @@
-﻿using NUnit.Framework;  
+﻿using NUnit.Framework;
 using System;
 
 namespace TrelloWrapper.Test.CriarCartao
 {
     [TestFixture]
-    public class SeveridadeAlta
+    public class SeveridadeAlta : TesteComCenario
     {
         private Cartao cartao;
         private Incidente incidente;

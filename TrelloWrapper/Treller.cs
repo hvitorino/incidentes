@@ -43,6 +43,16 @@ namespace TrelloWrapper
             cartao.Lista = ListaEstado.Em_Investigacao;
         }
 
+        public void moverParaPendencia(Cartao cartao)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void moverParaEmResolucao(Cartao cartao)
+        {
+            throw new NotImplementedException();
+        }
+
         private void enviarCartaoLocalParaTrello(Cartao cartaoLocal)
         {
             var equipeSistema = trello.Organizations.WithId(cartaoLocal.Sistema.ToLower());

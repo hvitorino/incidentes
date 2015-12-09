@@ -60,9 +60,11 @@
     <Compile Include="CriarCartao\SeveridadeAlta.cs" />
     <Compile Include="CriarCartao\SeveridadeBaixa.cs" />
     <Compile Include="CriarCartao\SeveridadeMedia.cs" />
+    <Compile Include="MoverCartaoEmInvestigacao.cs" />
     <Compile Include="MoverCartaoSubmitted.cs" />
-    <Compile Include="RecuperarTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TesteComCenario.cs" />
+    <Compile Include="TrelloExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

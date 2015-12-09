@@ -1,10 +1,10 @@
 ﻿using NUnit.Framework;
 using System;
 
-namespace TrelloWrapper.Test.CriarCartao
+namespace TrelloWrapper.Test
 {
     [TestFixture]
-    public class SeveridadeMedia : TesteComCenario
+    public class MoverCartaoEmInvestigacao : TesteComCenario
     {
         private Cartao cartao;
         private Incidente incidente;
@@ -17,8 +17,8 @@ namespace TrelloWrapper.Test.CriarCartao
 
             incidente = new Incidente
             {
-                Id = "SEVERIDADE_ALTA",
-                Severidade = NivelSeveridade.Media,
+                Id = "EM_INVESTIGACAO_MOVIDO",
+                Severidade = NivelSeveridade.Alta,
                 Sistema = "S160",
                 DataSubmissao = DateTime.Now
             };
@@ -27,15 +27,19 @@ namespace TrelloWrapper.Test.CriarCartao
         }
 
         [Test]
-        public void DevePossuirSeveridadeMedia()
+        public void PossoMoverParaEmResolucao()
         {
-            Assert.That(cartao.Severidade, Is.EqualTo(NivelSeveridade.Media));
+            treller.moverParaEmResolucao(cartao);
+
+            Assert.That(cartao.Lista, Is.EqualTo(ListaEstado.Em_Resolucao));
         }
 
         [Test]
-        public void DeveSerPostoEmInvestigacaoEm5Horas()
+        public void PossoMoverParaPendencia()
         {
-            Assert.That(cartao.PrazoFinalizacao, Is.EqualTo(incidente.DataSubmissao.AddHours(5)));
+            treller.moverParaPendencia(cartao);
+
+            Assert.That(cartao.Lista, Is.EqualTo(ListaEstado.Pendencia));
         }
     }
 }

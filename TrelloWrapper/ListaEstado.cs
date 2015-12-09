@@ -3,6 +3,8 @@
     public enum ListaEstado
     {
         Submitted,
-        Em_Investigacao
+        Em_Investigacao,
+        Em_Resolucao,
+        Pendencia
     }
 }

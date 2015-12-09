@@ -4,7 +4,7 @@ using System;
 namespace TrelloWrapper.Test
 {
     [TestFixture]
-    public class MoverCartaoSubmitted
+    public class MoverCartaoSubmitted : TesteComCenario
     {
         private Cartao cartao;
         private Incidente incidente;
