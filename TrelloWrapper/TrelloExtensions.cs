@@ -2,7 +2,7 @@
 using System.Linq;
 using TrelloNet;
 
-namespace TrelloWrapper.Test
+namespace TrelloWrapper
 {
     public static class TrelloExtensions
     {

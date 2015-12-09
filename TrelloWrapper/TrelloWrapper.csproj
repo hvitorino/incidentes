@@ -50,6 +50,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SLA.cs" />
     <Compile Include="Treller.cs" />
+    <Compile Include="TrelloExtensions.cs" />
     <Compile Include="TrelloFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
