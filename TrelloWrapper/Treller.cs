@@ -39,6 +39,8 @@ namespace TrelloWrapper
 
             var cartaoTrello = trello.Cards.WithShortId(cartao.ShortIdTrello, incidentes);
             trello.Cards.Move(cartaoTrello, listaEmInvestigacao);
+
+            cartao.Lista = ListaEstado.Em_Investigacao;
         }
 
         private void enviarCartaoLocalParaTrello(Cartao cartaoLocal)
