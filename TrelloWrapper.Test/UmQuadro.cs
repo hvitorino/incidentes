@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace TrelloWrapper.Test
 {
@@ -11,23 +10,37 @@ namespace TrelloWrapper.Test
         [OneTimeSetUp]
         public void Cenario()
         {
-            quadro = new Quadro
-            {
-                Nome = "S160",
-                Listas = new List<Lista>()
-            };
+            quadro = new Quadro();
         }
 
         [Test]
         public void TemNome()
         {
-            Assert.That(quadro.Nome, Is.EqualTo("S160"));
+            Assert.That(quadro.Nome, Is.EqualTo("Incidentes"));
         }
 
         [Test]
-        public void TemListas()
+        public void TemAListaSubmitted()
         {
-            Assert.That(quadro.Listas, Is.Not.Null);
+            Assert.That(quadro.Submitted, Is.Not.Null);
+        }
+
+        [Test]
+        public void TemAListaEmInvestigacao()
+        {
+            Assert.That(quadro.EmInvestigacao, Is.Not.Null);
+        }
+
+        [Test]
+        public void TemAListaEmResolucao()
+        {
+            Assert.That(quadro.EmResolucao, Is.Not.Null);
+        }
+
+        [Test]
+        public void TemAListaPendencia()
+        {
+            Assert.That(quadro.Pendencia, Is.Not.Null);
         }
     }
 }

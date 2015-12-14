@@ -1,10 +1,20 @@
-﻿using System.Collections.Generic;
-
-namespace TrelloWrapper
+﻿namespace TrelloWrapper
 {
     public class Quadro
     {
-        public List<Lista> Listas { get; set; }
-        public string Nome { get; set; }
+        public Quadro()
+        {
+            Nome = "Incidentes";
+            Submitted = new Lista();
+            EmInvestigacao = new Lista();
+            EmResolucao = new Lista();
+            Pendencia = new Lista();
+        }
+
+        public string Nome { get; private set; }
+        public Lista Submitted { get; private set; }
+        public Lista EmInvestigacao { get; private set; }
+        public Lista EmResolucao { get; private set; }
+        public Lista Pendencia { get; private set; }
     }
 }
