@@ -8,12 +8,12 @@ namespace TrelloWrapper.Test
     {
         private Cartao cartao;
         private Incidente incidente;
-        private Treller treller;
+        private TrelloConnection treller;
 
         [OneTimeSetUp]
         public void Cenario()
         {
-            treller = new Treller();
+            treller = new TrelloConnection();
 
             incidente = new Incidente
             {

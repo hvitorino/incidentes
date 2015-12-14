@@ -42,5 +42,19 @@ namespace TrelloWrapper.Test
         {
             Assert.That(quadro.Pendencia, Is.Not.Null);
         }
+
+        [Test]
+        public void PodeMoverCartaoEntreListas()
+        {
+            var cartaoEmSubmitted = new Cartao
+            {
+                Nome = "Cartão 1"
+            };
+
+            quadro.Submitted.AdicionaCartao(cartaoEmSubmitted);
+            quadro.MoveCartaoPara(cartaoEmSubmitted, quadro.EmInvestigacao);
+
+            Assert.That(quadro.EmInvestigacao.Cartoes, Contains.Item(cartaoEmSubmitted));
+        }
     }
 }
