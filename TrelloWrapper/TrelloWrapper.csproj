@@ -45,9 +45,11 @@
   <ItemGroup>
     <Compile Include="Cartao.cs" />
     <Compile Include="Incidente.cs" />
+    <Compile Include="Lista.cs" />
     <Compile Include="ListaEstado.cs" />
     <Compile Include="NivelSeveridade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quadro.cs" />
     <Compile Include="SLA.cs" />
     <Compile Include="Treller.cs" />
     <Compile Include="TrelloExtensions.cs" />

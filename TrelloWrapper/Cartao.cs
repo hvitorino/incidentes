@@ -11,5 +11,6 @@ namespace TrelloWrapper
         public DateTime PrazoFinalizacao { get; set; }
         public string Sistema { get; set; }
         public int ShortIdTrello { get; set; }
+        public DateTime DataSubmissao { get; set; }
     }
 }
