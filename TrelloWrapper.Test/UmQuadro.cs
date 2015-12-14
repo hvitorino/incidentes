@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 
 namespace TrelloWrapper.Test
 {
@@ -10,7 +11,9 @@ namespace TrelloWrapper.Test
         [OneTimeSetUp]
         public void Cenario()
         {
-            quadro = new Quadro();
+            var trello = new Mock<ITrelloConnection>().Object;
+
+            quadro = new Quadro(trello);
         }
 
         [Test]
@@ -52,7 +55,7 @@ namespace TrelloWrapper.Test
             };
 
             quadro.AdicionaCartaoA(cartaoEmSubmitted, quadro.Submitted);
-            quadro.MoveCartaoPara(cartaoEmSubmitted, quadro.EmInvestigacao);
+            quadro.MoveCartaoParaEmInvestigacao(cartaoEmSubmitted);
 
             Assert.That(quadro.EmInvestigacao.Cartoes, Contains.Item(cartaoEmSubmitted));
         }

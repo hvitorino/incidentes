@@ -2,8 +2,12 @@
 {
     public class Quadro
     {
-        public Quadro()
+        private ITrelloConnection trello;
+
+        public Quadro(ITrelloConnection trelloConnection)
         {
+            trello = trelloConnection;
+
             Nome = "Incidentes";
             Submitted = new Lista();
             EmInvestigacao = new Lista();
@@ -17,14 +21,19 @@
         public Lista EmResolucao { get; private set; }
         public Lista Pendencia { get; private set; }
 
-        public void MoveCartaoPara(Cartao cartao, Lista listaDestino)
+        public void MoveCartaoParaEmInvestigacao(Cartao cartao)
         {
-            RemoveCartaoSeContiver(cartao, Submitted);
-            RemoveCartaoSeContiver(cartao, EmInvestigacao);
-            RemoveCartaoSeContiver(cartao, EmResolucao);
-            RemoveCartaoSeContiver(cartao, Pendencia);
+            MoveCartaoPara(cartao, EmInvestigacao);
+        }
 
-            AdicionaCartaoA(cartao, listaDestino);
+        public void MoveCartaoParaEmResolucao(Cartao cartao)
+        {
+            MoveCartaoPara(cartao, EmResolucao);
+        }
+
+        public void MoveCartaoParaPendencia(Cartao cartao)
+        {
+            MoveCartaoPara(cartao, Pendencia);
         }
 
         public void AdicionaCartaoA(Cartao cartao, Lista lista)
@@ -36,6 +45,16 @@
         {
             if (lista.Cartoes.Contains(cartao))
                 lista.Cartoes.Remove(cartao);
+        }
+
+        private void MoveCartaoPara(Cartao cartao, Lista listaDestino)
+        {
+            RemoveCartaoSeContiver(cartao, Submitted);
+            RemoveCartaoSeContiver(cartao, EmInvestigacao);
+            RemoveCartaoSeContiver(cartao, EmResolucao);
+            RemoveCartaoSeContiver(cartao, Pendencia);
+
+            AdicionaCartaoA(cartao, listaDestino);
         }
     }
 }
