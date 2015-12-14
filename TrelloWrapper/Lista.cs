@@ -11,16 +11,5 @@ namespace TrelloWrapper
 
         public List<Cartao> Cartoes { get; set; }
         public string Nome { get; set; }
-
-        public void AdicionaCartao(Cartao cartao)
-        {
-            Cartoes.Add(cartao);
-        }
-
-        public void RemoveCartaoSeContiver(Cartao cartao)
-        {
-            if (Cartoes.Contains(cartao))
-                Cartoes.Remove(cartao);
-        }
     }
 }

@@ -29,15 +29,5 @@ namespace TrelloWrapper.Test
         {
             Assert.That(lista.Cartoes, Is.Not.Null);
         }
-
-        [Test]
-        public void PodeReceberNovoCartao()
-        {
-            var novoCartao = new Cartao();
-
-            lista.AdicionaCartao(novoCartao);
-
-            Assert.That(lista.Cartoes, Contains.Item(novoCartao));
-        }
     }
 }

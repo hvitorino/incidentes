@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace TrelloWrapper
+﻿namespace TrelloWrapper
 {
     public class Quadro
     {
@@ -21,12 +19,23 @@ namespace TrelloWrapper
 
         public void MoveCartaoPara(Cartao cartao, Lista listaDestino)
         {
-            Submitted.RemoveCartaoSeContiver(cartao);
-            EmInvestigacao.RemoveCartaoSeContiver(cartao);
-            EmResolucao.RemoveCartaoSeContiver(cartao);
-            Pendencia.RemoveCartaoSeContiver(cartao);
+            RemoveCartaoSeContiver(cartao, Submitted);
+            RemoveCartaoSeContiver(cartao, EmInvestigacao);
+            RemoveCartaoSeContiver(cartao, EmResolucao);
+            RemoveCartaoSeContiver(cartao, Pendencia);
 
-            listaDestino.AdicionaCartao(cartao);
+            AdicionaCartaoA(cartao, listaDestino);
+        }
+
+        public void AdicionaCartaoA(Cartao cartao, Lista lista)
+        {
+            lista.Cartoes.Add(cartao);
+        }
+
+        public void RemoveCartaoSeContiver(Cartao cartao, Lista lista)
+        {
+            if (lista.Cartoes.Contains(cartao))
+                lista.Cartoes.Remove(cartao);
         }
     }
 }

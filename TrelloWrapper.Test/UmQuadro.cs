@@ -51,7 +51,7 @@ namespace TrelloWrapper.Test
                 Nome = "Cartão 1"
             };
 
-            quadro.Submitted.AdicionaCartao(cartaoEmSubmitted);
+            quadro.AdicionaCartaoA(cartaoEmSubmitted, quadro.Submitted);
             quadro.MoveCartaoPara(cartaoEmSubmitted, quadro.EmInvestigacao);
 
             Assert.That(quadro.EmInvestigacao.Cartoes, Contains.Item(cartaoEmSubmitted));

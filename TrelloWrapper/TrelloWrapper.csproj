@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Cartao.cs" />
     <Compile Include="Incidente.cs" />
+    <Compile Include="ITrelloConnection.cs" />
     <Compile Include="Lista.cs" />
     <Compile Include="ListaEstado.cs" />
     <Compile Include="NivelSeveridade.cs" />
