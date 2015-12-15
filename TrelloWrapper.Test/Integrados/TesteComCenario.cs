@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace TrelloWrapper.Test
+namespace TrelloWrapper.Test.Integrados
 {
     [TestFixture]
     public abstract class TesteComCenario

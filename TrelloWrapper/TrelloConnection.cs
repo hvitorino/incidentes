@@ -33,7 +33,7 @@ namespace TrelloWrapper
 
         private List RecuperaListaSubmitted(Cartao cartao)
         {
-            var equipeSistema = trello.Organizations.WithId(cartao.Sistema.ToLower());
+            var equipeSistema = trello.Organizations.WithId(cartao.Lista.Quadro.Nome.ToLower());
 
             var incidentes = trello.Boards.ForOrganization(equipeSistema)
                 .Where(board => board.Name.Equals("incidentes", StringComparison.OrdinalIgnoreCase))
@@ -63,8 +63,8 @@ namespace TrelloWrapper
 
         private void MoveCartao(Cartao cartao, Lista lista)
         {
-            var quadro = trello.recuperarQuadroIncidentes(cartao.Sistema);
-            var listaDestino = trello.recuperarLista(cartao.Sistema, lista.Nome);
+            var quadro = trello.recuperarQuadroIncidentes(cartao.Lista.Quadro.Nome);
+            var listaDestino = trello.recuperarLista(cartao.Lista.Quadro.Nome, lista.Nome);
             var cartaoTrello = trello.Cards.WithShortId(cartao.ShortIdTrello, quadro);
 
             trello.Cards.Move(cartaoTrello, listaDestino);

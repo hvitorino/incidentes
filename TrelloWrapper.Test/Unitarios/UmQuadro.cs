@@ -1,7 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 
-namespace TrelloWrapper.Test
+namespace TrelloWrapper.Test.Unitarios
 {
     [TestFixture]
     public class UmQuadro
@@ -13,7 +13,7 @@ namespace TrelloWrapper.Test
         {
             var trello = new Mock<ITrelloConnection>().Object;
 
-            quadro = new Quadro(trello);
+            quadro = new Quadro("S160", trello);
         }
 
         [Test]

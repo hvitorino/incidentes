@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
-using System.Collections.Generic;
 
-namespace TrelloWrapper.Test
+namespace TrelloWrapper.Test.Unitarios
 {
     [TestFixture]
     public class UmaLista
@@ -11,7 +10,7 @@ namespace TrelloWrapper.Test
         [OneTimeSetUp]
         public void Cenario()
         {
-            lista = new Lista("Submitted");
+            lista = new Lista(new Quadro("S160", new TrelloConnection()), "Submitted");
         }
 
         [Test]

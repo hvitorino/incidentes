@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 
-namespace TrelloWrapper.Test
+namespace TrelloWrapper.Test.Unitarios
 {
     [TestFixture]
     public class UmCartao

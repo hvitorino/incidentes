@@ -3,41 +3,39 @@ using System;
 using System.Linq;
 using TrelloNet;
 
-namespace TrelloWrapper.Test
+namespace TrelloWrapper.Test.Integrados
 {
     [TestFixture]
     public class MoverCartaoEmInvestigacao : TesteComCenario
     {
         private Cartao cartao;
-        private TrelloConnection trelloConnection;
-        private Trello trelloAPI;
         private Quadro quadro;
+        private Trello trello;
 
         [OneTimeSetUp]
         public void Cenario()
         {
-            trelloConnection = new TrelloConnection();
+            trello = TrelloFactory.API;
 
-            quadro = new Quadro(trelloConnection);
+            quadro = new Quadro("S160", new TrelloConnection());
 
             cartao = new Cartao
             {
-                Nome = "GSOL1",
+                Nome = "SEVERIDADE_ALTA",
                 Severidade = NivelSeveridade.Alta,
-                Sistema = "S160",
                 DataSubmissao = DateTime.Now
             };
 
-            quadro.AdicionaCartaoA(cartao, quadro.Submitted);
+            quadro.AdicionaCartaoA(cartao, quadro.EmInvestigacao);
         }
 
         [Test]
         public void PossoMoverParaEmResolucao()
         {
-            trelloConnection.MoveParaEmResolucao(quadro, cartao);
+            quadro.MoveCartaoParaEmResolucao(cartao);
 
-            var emResolucao = trelloAPI.Boards.Search("Em_Resolucao").SingleOrDefault();
-            var cartaoTrello = trelloAPI.Cards.Search("GSOL1").SingleOrDefault();
+            var emResolucao = trello.Boards.Search(quadro.Nome).SingleOrDefault();
+            var cartaoTrello = trello.Cards.Search("GSOL1").SingleOrDefault();
 
             Assert.That(cartaoTrello, Is.Not.Null);
             Assert.That(cartaoTrello.IdList, Is.EqualTo(emResolucao.GetBoardId()));
@@ -46,10 +44,10 @@ namespace TrelloWrapper.Test
         [Test]
         public void PossoMoverParaPendencia()
         {
-            trelloConnection.MoveParaPendencia(quadro, cartao);
+            quadro.MoveCartaoParaPendencia(cartao);
 
-            var pendencia = trelloAPI.Boards.Search("Pendencia").SingleOrDefault();
-            var cartaoTrello = trelloAPI.Cards.Search("GSOL1").SingleOrDefault();
+            var pendencia = trello.Boards.Search("Pendencia").SingleOrDefault();
+            var cartaoTrello = trello.Cards.Search("GSOL1").SingleOrDefault();
 
             Assert.That(cartaoTrello, Is.Not.Null);
             Assert.That(cartaoTrello.IdList, Is.EqualTo(pendencia.GetBoardId()));

@@ -6,17 +6,19 @@ namespace TrelloWrapper
     {
         private ITrelloConnection trello;
 
-        public Quadro(ITrelloConnection trelloConnection)
+        public Quadro(string equipe, ITrelloConnection trelloConnection)
         {
             trello = trelloConnection;
+            Equipe = equipe;
 
             Nome = "Incidentes";
-            Submitted = new Lista("Submitted");
-            EmInvestigacao = new Lista("Em_Investigacao");
-            EmResolucao = new Lista("Em_Resolucao");
-            Pendencia = new Lista("Pendencia");
+            Submitted = new Lista(this, "Submitted");
+            EmInvestigacao = new Lista(this, "Em_Investigacao");
+            EmResolucao = new Lista(this, "Em_Resolucao");
+            Pendencia = new Lista(this, "Pendencia");
         }
 
+        public string Equipe { get; private set; }
         public string Nome { get; private set; }
         public Lista Submitted { get; private set; }
         public Lista EmInvestigacao { get; private set; }

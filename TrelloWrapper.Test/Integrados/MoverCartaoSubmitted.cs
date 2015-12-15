@@ -2,7 +2,7 @@
 using System;
 using TrelloNet;
 
-namespace TrelloWrapper.Test
+namespace TrelloWrapper.Test.Integrados
 {
     [TestFixture]
     public class MoverCartaoSubmitted : TesteComCenario
@@ -16,13 +16,12 @@ namespace TrelloWrapper.Test
         {
             trelloAPI = TrelloFactory.API;
 
-            quadro = new Quadro(new TrelloConnection());
+            quadro = new Quadro("S160", new TrelloConnection());
 
             cartao = new Cartao
             {
                 Nome = "GSOL1",
                 Severidade = NivelSeveridade.Alta,
-                Sistema = "S160",
                 DataSubmissao = DateTime.Now
             };
 
