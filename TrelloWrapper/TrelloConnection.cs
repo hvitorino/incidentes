@@ -42,28 +42,29 @@ namespace TrelloWrapper
             var listaSubmitted = trello.Lists.ForBoard(new BoardId(incidentes.GetBoardId()))
                 .Where(lista => lista.Name.Equals("Submitted", StringComparison.OrdinalIgnoreCase))
                 .FirstOrDefault();
+
             return listaSubmitted;
         }
 
-        public void MoveParaEmInvestigacao(Cartao cartao)
+        public void MoveParaEmInvestigacao(Quadro quadro, Cartao cartao)
         {
-            MoveCartao(cartao, ListaEstado.Em_Investigacao);
+            MoveCartao(cartao, quadro.EmInvestigacao);
         }
 
-        public void MoveParaPendencia(Cartao cartao)
+        public void MoveParaPendencia(Quadro quadro, Cartao cartao)
         {
-            MoveCartao(cartao, ListaEstado.Pendencia);
+            MoveCartao(cartao, quadro.Pendencia);
         }
 
-        public void MoveParaEmResolucao(Cartao cartao)
+        public void MoveParaEmResolucao(Quadro quadro, Cartao cartao)
         {
-            MoveCartao(cartao, ListaEstado.Em_Resolucao);
+            MoveCartao(cartao, quadro.EmResolucao);
         }
 
-        private void MoveCartao(Cartao cartao, ListaEstado lista)
+        private void MoveCartao(Cartao cartao, Lista lista)
         {
             var quadro = trello.recuperarQuadroIncidentes(cartao.Sistema);
-            var listaDestino = trello.recuperarLista(cartao.Sistema, lista);
+            var listaDestino = trello.recuperarLista(cartao.Sistema, lista.Nome);
             var cartaoTrello = trello.Cards.WithShortId(cartao.ShortIdTrello, quadro);
 
             trello.Cards.Move(cartaoTrello, listaDestino);

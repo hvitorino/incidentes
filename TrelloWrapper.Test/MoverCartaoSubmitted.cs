@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using TrelloNet;
 
 namespace TrelloWrapper.Test
 {
@@ -7,12 +8,15 @@ namespace TrelloWrapper.Test
     public class MoverCartaoSubmitted : TesteComCenario
     {
         private Cartao cartao;
-        private TrelloConnection treller;
+        private Quadro quadro;
+        private Trello trelloAPI;
 
         [OneTimeSetUp]
         public void Cenario()
         {
-            treller = new TrelloConnection();
+            trelloAPI = TrelloFactory.API;
+
+            quadro = new Quadro(new TrelloConnection());
 
             cartao = new Cartao
             {
@@ -22,15 +26,13 @@ namespace TrelloWrapper.Test
                 DataSubmissao = DateTime.Now
             };
 
-            treller.CadastraCartao(cartao);
+            quadro.AdicionaCartaoA(cartao, quadro.Submitted);
         }
 
         [Test]
         public void PossoMoverParaEmInvestigacao()
         {
-            treller.MoveParaEmInvestigacao(cartao);
-
-            Assert.That(cartao.Lista, Is.EqualTo(ListaEstado.Em_Investigacao));
+            quadro.MoveCartaoParaEmInvestigacao(cartao);
         }
     }
 }

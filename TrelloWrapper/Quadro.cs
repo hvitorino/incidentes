@@ -25,17 +25,17 @@ namespace TrelloWrapper
 
         public void MoveCartaoParaEmInvestigacao(Cartao cartao)
         {
-            MoveCartaoPara(cartao, EmInvestigacao);
+            MoveCartaoPara(this, cartao, EmInvestigacao);
         }
 
         public void MoveCartaoParaEmResolucao(Cartao cartao)
         {
-            MoveCartaoPara(cartao, EmResolucao);
+            MoveCartaoPara(this, cartao, EmResolucao);
         }
 
         public void MoveCartaoParaPendencia(Cartao cartao)
         {
-            MoveCartaoPara(cartao, Pendencia);
+            MoveCartaoPara(this, cartao, Pendencia);
         }
 
         public void AdicionaCartaoA(Cartao cartao, Lista lista)
@@ -57,27 +57,27 @@ namespace TrelloWrapper
                         .Contains(cartao);
         }
 
-        public void RemoveCartaoSeContiver(Cartao cartao, Lista lista)
+        public void RemoveCartaoSeContiver(Quadro quadro, Cartao cartao, Lista lista)
         {
             if (lista.Cartoes.Contains(cartao))
                 lista.Cartoes.Remove(cartao);
         }
 
-        private void MoveCartaoPara(Cartao cartao, Lista listaDestino)
+        private void MoveCartaoPara(Quadro quadro, Cartao cartao, Lista listaDestino)
         {
-            RemoveCartaoSeContiver(cartao, Submitted);
-            RemoveCartaoSeContiver(cartao, EmInvestigacao);
-            RemoveCartaoSeContiver(cartao, EmResolucao);
-            RemoveCartaoSeContiver(cartao, Pendencia);
+            RemoveCartaoSeContiver(quadro, cartao, Submitted);
+            RemoveCartaoSeContiver(quadro, cartao, EmInvestigacao);
+            RemoveCartaoSeContiver(quadro, cartao, EmResolucao);
+            RemoveCartaoSeContiver(quadro, cartao, Pendencia);
 
             AdicionaCartaoA(cartao, listaDestino);
 
             if (listaDestino == EmInvestigacao)
-                trello.MoveParaEmInvestigacao(cartao);
+                trello.MoveParaEmInvestigacao(quadro, cartao);
             else if (listaDestino == EmResolucao)
-                trello.MoveParaEmResolucao(cartao);
+                trello.MoveParaEmResolucao(quadro, cartao);
             else
-                trello.MoveParaPendencia(cartao);
+                trello.MoveParaPendencia(quadro, cartao);
         }
     }
 }

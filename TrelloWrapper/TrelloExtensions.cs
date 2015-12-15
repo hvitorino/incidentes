@@ -36,7 +36,7 @@ namespace TrelloWrapper
                 .FirstOrDefault();
         }
 
-        public static List recuperarLista(this Trello trello, string sistema, ListaEstado lista)
+        public static List recuperarLista(this Trello trello, string sistema, string lista)
         {
             var quadro = trello.recuperarQuadroIncidentes(sistema.ToLower());
 

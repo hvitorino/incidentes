@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Linq;
+using TrelloNet;
 
 namespace TrelloWrapper.Test
 {
@@ -7,12 +9,16 @@ namespace TrelloWrapper.Test
     public class MoverCartaoEmInvestigacao : TesteComCenario
     {
         private Cartao cartao;
-        private TrelloConnection treller;
+        private TrelloConnection trelloConnection;
+        private Trello trelloAPI;
+        private Quadro quadro;
 
         [OneTimeSetUp]
         public void Cenario()
         {
-            treller = new TrelloConnection();
+            trelloConnection = new TrelloConnection();
+
+            quadro = new Quadro(trelloConnection);
 
             cartao = new Cartao
             {
@@ -22,23 +28,31 @@ namespace TrelloWrapper.Test
                 DataSubmissao = DateTime.Now
             };
 
-            treller.CadastraCartao(cartao);
+            quadro.AdicionaCartaoA(cartao, quadro.Submitted);
         }
 
         [Test]
         public void PossoMoverParaEmResolucao()
         {
-            treller.MoveParaEmResolucao(cartao);
+            trelloConnection.MoveParaEmResolucao(quadro, cartao);
 
-            Assert.That(cartao.Lista, Is.EqualTo(ListaEstado.Em_Resolucao));
+            var emResolucao = trelloAPI.Boards.Search("Em_Resolucao").SingleOrDefault();
+            var cartaoTrello = trelloAPI.Cards.Search("GSOL1").SingleOrDefault();
+
+            Assert.That(cartaoTrello, Is.Not.Null);
+            Assert.That(cartaoTrello.IdList, Is.EqualTo(emResolucao.GetBoardId()));
         }
 
         [Test]
         public void PossoMoverParaPendencia()
         {
-            treller.MoveParaPendencia(cartao);
+            trelloConnection.MoveParaPendencia(quadro, cartao);
 
-            Assert.That(cartao.Lista, Is.EqualTo(ListaEstado.Pendencia));
+            var pendencia = trelloAPI.Boards.Search("Pendencia").SingleOrDefault();
+            var cartaoTrello = trelloAPI.Cards.Search("GSOL1").SingleOrDefault();
+
+            Assert.That(cartaoTrello, Is.Not.Null);
+            Assert.That(cartaoTrello.IdList, Is.EqualTo(pendencia.GetBoardId()));
         }
     }
 }
