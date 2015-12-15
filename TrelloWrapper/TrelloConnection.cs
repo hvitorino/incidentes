@@ -17,30 +17,50 @@ namespace TrelloWrapper
             trello.Authorize(token);
         }
 
-        public Cartao cadastrarIncidente(Incidente incidente)
+        public void CadastraCartao(Cartao cartao)
         {
-            var cartaoLocal = mapearIncidenteParaCartaoLocal(incidente);
-            enviarCartaoLocalParaTrello(cartaoLocal);
+            List listaSubmitted = RecuperaListaSubmitted(cartao);
 
-            return cartaoLocal;
+            var novoCartao = new NewCard(cartao.Nome, new ListId(listaSubmitted.Id));
+            var cartaoTrello = trello.Cards.Add(novoCartao);
+
+            cartao.ShortIdTrello = cartaoTrello.IdShort;
+
+            adicionarEtiquetaDeSeveridade(cartao, cartaoTrello);
+            adicionarEtiquetaDePrazo(cartaoTrello);
+            definirPrazoDeFinalizacao(cartao, cartaoTrello);
         }
 
-        public void moverParaEmInvestigacao(Cartao cartao)
+        private List RecuperaListaSubmitted(Cartao cartao)
         {
-            moverCartao(cartao, ListaEstado.Em_Investigacao);
+            var equipeSistema = trello.Organizations.WithId(cartao.Sistema.ToLower());
+
+            var incidentes = trello.Boards.ForOrganization(equipeSistema)
+                .Where(board => board.Name.Equals("incidentes", StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
+
+            var listaSubmitted = trello.Lists.ForBoard(new BoardId(incidentes.GetBoardId()))
+                .Where(lista => lista.Name.Equals("Submitted", StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
+            return listaSubmitted;
         }
 
-        public void moverParaPendencia(Cartao cartao)
+        public void MoveParaEmInvestigacao(Cartao cartao)
         {
-            moverCartao(cartao, ListaEstado.Pendencia);
+            MoveCartao(cartao, ListaEstado.Em_Investigacao);
         }
 
-        public void moverParaEmResolucao(Cartao cartao)
+        public void MoveParaPendencia(Cartao cartao)
         {
-            moverCartao(cartao, ListaEstado.Em_Resolucao);
+            MoveCartao(cartao, ListaEstado.Pendencia);
         }
 
-        private void moverCartao(Cartao cartao, ListaEstado lista)
+        public void MoveParaEmResolucao(Cartao cartao)
+        {
+            MoveCartao(cartao, ListaEstado.Em_Resolucao);
+        }
+
+        private void MoveCartao(Cartao cartao, ListaEstado lista)
         {
             var quadro = trello.recuperarQuadroIncidentes(cartao.Sistema);
             var listaDestino = trello.recuperarLista(cartao.Sistema, lista);
@@ -51,30 +71,10 @@ namespace TrelloWrapper
             cartao.Lista = lista;
         }
 
-        private void enviarCartaoLocalParaTrello(Cartao cartaoLocal)
-        {
-            var equipeSistema = trello.Organizations.WithId(cartaoLocal.Sistema.ToLower());
-
-            var incidentes = trello.Boards.ForOrganization(equipeSistema)
-                .Where(board => board.Name.Equals("incidentes", StringComparison.OrdinalIgnoreCase))
-                .FirstOrDefault();
-
-            var listaSubmitted = trello.Lists.ForBoard(new BoardId(incidentes.GetBoardId()))
-                .Where(lista => lista.Name.Equals("Submitted", StringComparison.OrdinalIgnoreCase))
-                .FirstOrDefault();
-
-            var novoCartao = new NewCard(cartaoLocal.Nome, new ListId(listaSubmitted.Id));
-            var cartaoTrello = trello.Cards.Add(novoCartao);
-
-            cartaoLocal.ShortIdTrello = cartaoTrello.IdShort;
-
-            adicionarEtiquetaDeSeveridade(cartaoLocal, cartaoTrello);
-            adicionarEtiquetaDePrazo(cartaoTrello);
-            definirPrazoDeFinalizacao(cartaoLocal, cartaoTrello);
-        }
-
         private void definirPrazoDeFinalizacao(Cartao cartaoLocal, Card cartaoTrello)
         {
+            cartaoLocal.PrazoFinalizacao = calcularPrazoFinalizacao(cartaoLocal);
+
             trello.Cards.ChangeDueDate(cartaoTrello, cartaoLocal.PrazoFinalizacao);
         }
 
@@ -99,32 +99,19 @@ namespace TrelloWrapper
             }
         }
 
-        private Cartao mapearIncidenteParaCartaoLocal(Incidente incidente)
+        private DateTime calcularPrazoFinalizacao(Cartao cartao)
         {
-            return new Cartao
+            if(cartao.Severidade == NivelSeveridade.Alta)
             {
-                Sistema = incidente.Sistema,
-                Nome = string.Format("{0} - {1}", incidente.Id, incidente.Severidade),
-                Severidade = incidente.Severidade,
-                EstadoSLA = SLA.Novo,
-                Lista = ListaEstado.Submitted,
-                PrazoFinalizacao = calcularPrazoFinalizacao(incidente)
-            };
-        }
-
-        private DateTime calcularPrazoFinalizacao(Incidente incidente)
-        {
-            if(incidente.Severidade == NivelSeveridade.Alta)
-            {
-                return incidente.DataSubmissao.AddHours(2);
+                return cartao.DataSubmissao.AddHours(2);
             }
 
-            if (incidente.Severidade == NivelSeveridade.Baixa)
+            if (cartao.Severidade == NivelSeveridade.Baixa)
             {
-                return incidente.DataSubmissao.AddHours(48);
+                return cartao.DataSubmissao.AddHours(48);
             }
 
-            return incidente.DataSubmissao;
+            return cartao.DataSubmissao;
         }
 
         public void Dispose()

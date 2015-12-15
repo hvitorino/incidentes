@@ -7,7 +7,6 @@ namespace TrelloWrapper.Test.CriarCartao
     public class SeveridadeBaixa : TesteComCenario
     {
         private Cartao cartao;
-        private Incidente incidente;
         private TrelloConnection treller;
 
         [OneTimeSetUp]
@@ -15,15 +14,15 @@ namespace TrelloWrapper.Test.CriarCartao
         {
             treller = new TrelloConnection();
 
-            incidente = new Incidente
+            cartao = new Cartao
             {
-                Id = "SEVERIDADE_BAIXA",
+                Nome = "GSOL1",
                 Severidade = NivelSeveridade.Baixa,
                 Sistema = "S160",
                 DataSubmissao = DateTime.Now
             };
 
-            cartao = treller.cadastrarIncidente(incidente);
+            treller.CadastraCartao(cartao);
         }
 
         [Test]
@@ -35,7 +34,7 @@ namespace TrelloWrapper.Test.CriarCartao
         [Test]
         public void DeveSerPostoEmInvestigacaoEm48Horas()
         {
-            Assert.That(cartao.PrazoFinalizacao, Is.EqualTo(incidente.DataSubmissao.AddHours(48)));
+            Assert.That(cartao.PrazoFinalizacao, Is.EqualTo(cartao.DataSubmissao.AddHours(48)));
         }
     }
 }

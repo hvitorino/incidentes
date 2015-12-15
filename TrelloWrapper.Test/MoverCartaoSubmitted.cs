@@ -7,7 +7,6 @@ namespace TrelloWrapper.Test
     public class MoverCartaoSubmitted : TesteComCenario
     {
         private Cartao cartao;
-        private Incidente incidente;
         private TrelloConnection treller;
 
         [OneTimeSetUp]
@@ -15,21 +14,21 @@ namespace TrelloWrapper.Test
         {
             treller = new TrelloConnection();
 
-            incidente = new Incidente
+            cartao = new Cartao
             {
-                Id = "EM_INVESTIGACAO_MOVIDO",
+                Nome = "GSOL1",
                 Severidade = NivelSeveridade.Alta,
                 Sistema = "S160",
                 DataSubmissao = DateTime.Now
             };
 
-            cartao = treller.cadastrarIncidente(incidente);
+            treller.CadastraCartao(cartao);
         }
 
         [Test]
         public void PossoMoverParaEmInvestigacao()
         {
-            treller.moverParaEmInvestigacao(cartao);
+            treller.MoveParaEmInvestigacao(cartao);
 
             Assert.That(cartao.Lista, Is.EqualTo(ListaEstado.Em_Investigacao));
         }

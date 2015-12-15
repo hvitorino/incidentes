@@ -4,12 +4,13 @@ namespace TrelloWrapper
 {
     public class Lista
     {
-        public Lista()
+        public Lista(string nome)
         {
             Cartoes = new List<Cartao>();
+            Nome = nome;
         }
 
-        public List<Cartao> Cartoes { get; set; }
-        public string Nome { get; set; }
+        public List<Cartao> Cartoes { get; private set; }
+        public string Nome { get; private set; }
     }
 }

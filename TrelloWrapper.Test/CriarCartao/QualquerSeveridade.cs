@@ -7,7 +7,6 @@ namespace TrelloWrapper.Test.CriarCartao
     public class QualquerSeveridade : TesteComCenario
     {
         private Cartao cartao;
-        private Incidente incidente;
         private TrelloConnection treller;
 
         [OneTimeSetUp]
@@ -15,15 +14,15 @@ namespace TrelloWrapper.Test.CriarCartao
         {
             treller = new TrelloConnection();
 
-            incidente = new Incidente
+            cartao = new Cartao
             {
-                Id = "QUALQUER_SEVERIDADE",
+                Nome = "QUALQUER_SEVERIDADE",
                 Severidade = NivelSeveridade.Baixa,
                 Sistema = "S160",
                 DataSubmissao = DateTime.Now
             };
 
-            cartao = treller.cadastrarIncidente(incidente);
+            treller.CadastraCartao(cartao);
         }
 
         [Test]
@@ -36,12 +35,6 @@ namespace TrelloWrapper.Test.CriarCartao
         public void DevePossuirEtiquetaNovoSLA()
         {
             Assert.That(cartao.EstadoSLA, Is.EqualTo(SLA.Novo));
-        }
-
-        [Test]
-        public void DevePossuirNomeNoFormatoIdSeveridade()
-        {
-            Assert.That(cartao.Nome, Is.EqualTo(incidente.Id + " - " + incidente.Severidade));
         }
 
         [Test]

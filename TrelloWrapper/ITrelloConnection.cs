@@ -2,9 +2,9 @@
 {
     public interface ITrelloConnection
     {
-        Cartao cadastrarIncidente(Incidente incidente);
-        void moverParaEmInvestigacao(Cartao cartao);
-        void moverParaEmResolucao(Cartao cartao);
-        void moverParaPendencia(Cartao cartao);
+        void CadastraCartao(Cartao cartao);
+        void MoveParaEmInvestigacao(Cartao cartao);
+        void MoveParaEmResolucao(Cartao cartao);
+        void MoveParaPendencia(Cartao cartao);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace TrelloWrapper
+﻿using System.Linq;
+
+namespace TrelloWrapper
 {
     public class Quadro
     {
@@ -9,10 +11,10 @@
             trello = trelloConnection;
 
             Nome = "Incidentes";
-            Submitted = new Lista();
-            EmInvestigacao = new Lista();
-            EmResolucao = new Lista();
-            Pendencia = new Lista();
+            Submitted = new Lista("Submitted");
+            EmInvestigacao = new Lista("Em_Investigacao");
+            EmResolucao = new Lista("Em_Resolucao");
+            Pendencia = new Lista("Pendencia");
         }
 
         public string Nome { get; private set; }
@@ -38,7 +40,21 @@
 
         public void AdicionaCartaoA(Cartao cartao, Lista lista)
         {
+            if (CartaoNaoCadastrado(cartao))
+            {
+                trello.CadastraCartao(cartao);
+            }
+
             lista.Cartoes.Add(cartao);
+        }
+
+        private bool CartaoNaoCadastrado(Cartao cartao)
+        {
+            return Submitted.Cartoes
+                        .Union(EmInvestigacao.Cartoes)
+                        .Union(EmResolucao.Cartoes)
+                        .Union(Pendencia.Cartoes)
+                        .Contains(cartao);
         }
 
         public void RemoveCartaoSeContiver(Cartao cartao, Lista lista)
@@ -55,6 +71,13 @@
             RemoveCartaoSeContiver(cartao, Pendencia);
 
             AdicionaCartaoA(cartao, listaDestino);
+
+            if (listaDestino == EmInvestigacao)
+                trello.MoveParaEmInvestigacao(cartao);
+            else if (listaDestino == EmResolucao)
+                trello.MoveParaEmResolucao(cartao);
+            else
+                trello.MoveParaPendencia(cartao);
         }
     }
 }

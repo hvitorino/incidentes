@@ -11,11 +11,7 @@ namespace TrelloWrapper.Test
         [OneTimeSetUp]
         public void Cenario()
         {
-            lista = new Lista
-            {
-                Nome = "Submitted",
-                Cartoes = new List<Cartao>()
-            };
+            lista = new Lista("Submitted");
         }
 
         [Test]
