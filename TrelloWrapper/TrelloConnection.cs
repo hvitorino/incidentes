@@ -17,11 +17,11 @@ namespace TrelloWrapper
             trello.Authorize(token);
         }
 
-        public void CadastraCartao(Cartao cartao)
+        public void CadastraCartao(Cartao cartao, Lista lista)
         {
-            List listaSubmitted = RecuperaListaSubmitted(cartao);
+            List trelloList = RecuperaLista(lista);
 
-            var novoCartao = new NewCard(cartao.Nome, new ListId(listaSubmitted.Id));
+            var novoCartao = new NewCard(cartao.Nome, new ListId(trelloList.Id));
             var cartaoTrello = trello.Cards.Add(novoCartao);
 
             cartao.ShortIdTrello = cartaoTrello.IdShort;
@@ -29,6 +29,21 @@ namespace TrelloWrapper
             adicionarEtiquetaDeSeveridade(cartao, cartaoTrello);
             adicionarEtiquetaDePrazo(cartaoTrello);
             definirPrazoDeFinalizacao(cartao, cartaoTrello);
+        }
+
+        private List RecuperaLista(Lista lista)
+        {
+            var equipeSistema = trello.Organizations.WithId(lista.Quadro.Equipe.ToLower());
+
+            var trelloBoard = trello.Boards.ForOrganization(equipeSistema)
+                .Where(board => board.Name.Equals(lista.Quadro.Nome, StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
+
+            var trelloList = trello.Lists.ForBoard(new BoardId(trelloBoard.GetBoardId()))
+                .Where(l => l.Name.Equals(lista.Nome, StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
+
+            return trelloList;
         }
 
         private List RecuperaListaSubmitted(Cartao cartao)

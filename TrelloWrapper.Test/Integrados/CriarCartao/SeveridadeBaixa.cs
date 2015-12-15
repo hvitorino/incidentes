@@ -34,7 +34,7 @@ namespace TrelloWrapper.Test.Integrados.CriarCartao
         {
             var card = trello.Cards.Search("SEVERIDADE_BAIXA").SingleOrDefault();
 
-            Assert.That(card.LabelColors, Contains.Item(Color.Blue));
+            Assert.That(card.LabelColors, Contains.Item(Color.Green));
         }
 
         [Test]

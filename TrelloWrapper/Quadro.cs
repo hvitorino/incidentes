@@ -42,17 +42,19 @@ namespace TrelloWrapper
 
         public void AdicionaCartaoA(Cartao cartao, Lista lista)
         {
+
             if (CartaoNaoCadastrado(cartao))
             {
-                trello.CadastraCartao(cartao);
+                trello.CadastraCartao(cartao, lista);
             }
 
+            cartao.Lista = lista;
             lista.Cartoes.Add(cartao);
         }
 
         private bool CartaoNaoCadastrado(Cartao cartao)
         {
-            return Submitted.Cartoes
+            return !Submitted.Cartoes
                         .Union(EmInvestigacao.Cartoes)
                         .Union(EmResolucao.Cartoes)
                         .Union(Pendencia.Cartoes)
