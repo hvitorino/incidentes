@@ -9,8 +9,6 @@ namespace TrelloWrapper.Test.Integrados
     public class MoverCartaoEmInvestigacao : TesteComCenario
     {
         private Cartao cartao;
-        private Quadro quadro;
-        private Trello trello;
 
         [OneTimeSetUp]
         public void Cenario()
@@ -34,11 +32,11 @@ namespace TrelloWrapper.Test.Integrados
         {
             quadro.MoveCartaoParaEmResolucao(cartao);
 
-            var emResolucao = trello.Boards.Search(quadro.Nome).SingleOrDefault();
-            var cartaoTrello = trello.Cards.Search("GSOL1").SingleOrDefault();
+            var emResolucao = TrelloHelper.RecuperarLista(quadro.EmResolucao);
+            var cartaoTrello = TrelloHelper.RecuperarCartao(cartao);
 
             Assert.That(cartaoTrello, Is.Not.Null);
-            Assert.That(cartaoTrello.IdList, Is.EqualTo(emResolucao.GetBoardId()));
+            Assert.That(cartaoTrello.IdList, Is.EqualTo(emResolucao.Id));
         }
 
         [Test]
@@ -46,11 +44,11 @@ namespace TrelloWrapper.Test.Integrados
         {
             quadro.MoveCartaoParaPendencia(cartao);
 
-            var pendencia = trello.Boards.Search("Pendencia").SingleOrDefault();
-            var cartaoTrello = trello.Cards.Search("GSOL1").SingleOrDefault();
+            var pendencia = TrelloHelper.RecuperarLista(quadro.Pendencia);
+            var cartaoTrello = TrelloHelper.RecuperarCartao(cartao);
 
             Assert.That(cartaoTrello, Is.Not.Null);
-            Assert.That(cartaoTrello.IdList, Is.EqualTo(pendencia.GetBoardId()));
+            Assert.That(cartaoTrello.IdList, Is.EqualTo(pendencia.GetListId()));
         }
     }
 }

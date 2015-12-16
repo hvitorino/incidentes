@@ -24,7 +24,7 @@ namespace TrelloWrapper
             var novoCartao = new NewCard(cartao.Nome, new ListId(trelloList.Id));
             var cartaoTrello = trello.Cards.Add(novoCartao);
 
-            cartao.ShortIdTrello = cartaoTrello.IdShort;
+            cartao.IdShortTrello = cartaoTrello.IdShort;
 
             adicionarEtiquetaDeSeveridade(cartao, cartaoTrello);
             adicionarEtiquetaDePrazo(cartaoTrello);
@@ -76,21 +76,18 @@ namespace TrelloWrapper
             MoveCartao(cartao, quadro.EmResolucao);
         }
 
-        private void MoveCartao(Cartao cartao, Lista lista)
+        private void MoveCartao(Cartao cartao, Lista listaDestino)
         {
-            var quadro = trello.recuperarQuadroIncidentes(cartao.Lista.Quadro.Nome);
-            var listaDestino = trello.recuperarLista(cartao.Lista.Quadro.Nome, lista.Nome);
-            var cartaoTrello = trello.Cards.WithShortId(cartao.ShortIdTrello, quadro);
+            var cartaoTrello = TrelloHelper.RecuperarCartao(cartao);
+            var listaTrello = TrelloHelper.RecuperarLista(listaDestino);
 
-            trello.Cards.Move(cartaoTrello, listaDestino);
+            trello.Cards.Move(cartaoTrello, new ListId(listaTrello.Id));
 
-            cartao.Lista = lista;
+            cartao.Lista = listaDestino;
         }
 
         private void definirPrazoDeFinalizacao(Cartao cartaoLocal, Card cartaoTrello)
         {
-            cartaoLocal.PrazoFinalizacao = calcularPrazoFinalizacao(cartaoLocal);
-
             trello.Cards.ChangeDueDate(cartaoTrello, cartaoLocal.PrazoFinalizacao);
         }
 
@@ -113,21 +110,6 @@ namespace TrelloWrapper
             {
                 trello.Cards.AddLabel(cartaoTrello, Color.Blue);
             }
-        }
-
-        private DateTime calcularPrazoFinalizacao(Cartao cartao)
-        {
-            if(cartao.Severidade == NivelSeveridade.Alta)
-            {
-                return cartao.DataSubmissao.AddHours(2);
-            }
-
-            if (cartao.Severidade == NivelSeveridade.Baixa)
-            {
-                return cartao.DataSubmissao.AddHours(48);
-            }
-
-            return cartao.DataSubmissao;
         }
 
         public void Dispose()
