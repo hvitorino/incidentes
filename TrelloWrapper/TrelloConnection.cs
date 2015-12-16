@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using TrelloNet;
 
 namespace TrelloWrapper
@@ -19,46 +18,16 @@ namespace TrelloWrapper
 
         public void CadastraCartao(Cartao cartao, Lista lista)
         {
-            List trelloList = RecuperaLista(lista);
+            List trelloList = TrelloHelper.RecuperaLista(lista);
 
             var novoCartao = new NewCard(cartao.Nome, new ListId(trelloList.Id));
             var cartaoTrello = trello.Cards.Add(novoCartao);
 
             cartao.IdShortTrello = cartaoTrello.IdShort;
 
-            adicionarEtiquetaDeSeveridade(cartao, cartaoTrello);
-            adicionarEtiquetaDePrazo(cartaoTrello);
-            definirPrazoDeFinalizacao(cartao, cartaoTrello);
-        }
-
-        private List RecuperaLista(Lista lista)
-        {
-            var equipeSistema = trello.Organizations.WithId(lista.Quadro.Equipe.ToLower());
-
-            var trelloBoard = trello.Boards.ForOrganization(equipeSistema)
-                .Where(board => board.Name.Equals(lista.Quadro.Nome, StringComparison.OrdinalIgnoreCase))
-                .FirstOrDefault();
-
-            var trelloList = trello.Lists.ForBoard(new BoardId(trelloBoard.GetBoardId()))
-                .Where(l => l.Name.Equals(lista.Nome, StringComparison.OrdinalIgnoreCase))
-                .FirstOrDefault();
-
-            return trelloList;
-        }
-
-        private List RecuperaListaSubmitted(Cartao cartao)
-        {
-            var equipeSistema = trello.Organizations.WithId(cartao.Lista.Quadro.Nome.ToLower());
-
-            var incidentes = trello.Boards.ForOrganization(equipeSistema)
-                .Where(board => board.Name.Equals("incidentes", StringComparison.OrdinalIgnoreCase))
-                .FirstOrDefault();
-
-            var listaSubmitted = trello.Lists.ForBoard(new BoardId(incidentes.GetBoardId()))
-                .Where(lista => lista.Name.Equals("Submitted", StringComparison.OrdinalIgnoreCase))
-                .FirstOrDefault();
-
-            return listaSubmitted;
+            AdicionaEtiquetaDeSeveridade(cartao, cartaoTrello);
+            AdicionaEtiquetaDePrazo(cartaoTrello);
+            RegistraPrazoDeFinalizacao(cartao, cartaoTrello);
         }
 
         public void MoveParaEmInvestigacao(Quadro quadro, Cartao cartao)
@@ -78,25 +47,25 @@ namespace TrelloWrapper
 
         private void MoveCartao(Cartao cartao, Lista listaDestino)
         {
-            var cartaoTrello = TrelloHelper.RecuperarCartao(cartao);
-            var listaTrello = TrelloHelper.RecuperarLista(listaDestino);
+            var cartaoTrello = TrelloHelper.RecuperaCartao(cartao);
+            var listaTrello = TrelloHelper.RecuperaLista(listaDestino);
 
             trello.Cards.Move(cartaoTrello, new ListId(listaTrello.Id));
 
             cartao.Lista = listaDestino;
         }
 
-        private void definirPrazoDeFinalizacao(Cartao cartaoLocal, Card cartaoTrello)
+        private void RegistraPrazoDeFinalizacao(Cartao cartaoLocal, Card cartaoTrello)
         {
             trello.Cards.ChangeDueDate(cartaoTrello, cartaoLocal.PrazoFinalizacao);
         }
 
-        private void adicionarEtiquetaDePrazo(Card cartaoTrello)
+        private void AdicionaEtiquetaDePrazo(Card cartaoTrello)
         {
             trello.Cards.AddLabel(cartaoTrello, Color.Green);
         }
 
-        private void adicionarEtiquetaDeSeveridade(Cartao cartaoLocal, Card cartaoTrello)
+        private void AdicionaEtiquetaDeSeveridade(Cartao cartaoLocal, Card cartaoTrello)
         {
             if (cartaoLocal.Severidade == NivelSeveridade.Alta)
             {
@@ -106,7 +75,7 @@ namespace TrelloWrapper
             {
                 trello.Cards.AddLabel(cartaoTrello, Color.Orange);
             }
-            else if (cartaoLocal.Severidade == NivelSeveridade.Baixa)
+            else //if (cartaoLocal.Severidade == NivelSeveridade.Baixa)
             {
                 trello.Cards.AddLabel(cartaoTrello, Color.Blue);
             }

@@ -29,8 +29,8 @@ namespace TrelloWrapper.Test.Integrados
         {
             quadro.MoveCartaoParaEmInvestigacao(cartao);
 
-            var card = TrelloHelper.RecuperarCartao(cartao);
-            var listaEmInvestigacao = TrelloHelper.RecuperarLista(cartao.Lista);
+            var card = TrelloHelper.RecuperaCartao(cartao);
+            var listaEmInvestigacao = TrelloHelper.RecuperaLista(cartao.Lista);
 
             Assert.That(card.IdBoard, Is.EqualTo(listaEmInvestigacao.IdBoard));
         }

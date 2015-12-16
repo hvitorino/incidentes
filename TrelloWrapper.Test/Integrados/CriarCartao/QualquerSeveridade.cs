@@ -26,7 +26,7 @@ namespace TrelloWrapper.Test.Integrados.CriarCartao
         [Test]
         public void DeveSerCadastrado()
         {
-            var card = TrelloHelper.RecuperarCartao(cartao);
+            var card = TrelloHelper.RecuperaCartao(cartao);
 
             Assert.That(card, Is.Not.Null);
         }
@@ -34,7 +34,7 @@ namespace TrelloWrapper.Test.Integrados.CriarCartao
         [Test]
         public void DevePossuirNome()
         {
-            var card = TrelloHelper.RecuperarCartao(cartao);
+            var card = TrelloHelper.RecuperaCartao(cartao);
 
             Assert.That(card.Name, Is.Not.Null);
         }
@@ -42,8 +42,8 @@ namespace TrelloWrapper.Test.Integrados.CriarCartao
         [Test]
         public void DeveSerCriadoNaListaSubmitted()
         {
-            var listaSubmitted = TrelloHelper.RecuperarLista(cartao.Lista);
-            var card = TrelloHelper.RecuperarCartao(cartao);
+            var listaSubmitted = TrelloHelper.RecuperaLista(cartao.Lista);
+            var card = TrelloHelper.RecuperaCartao(cartao);
 
             Assert.That(card.IdBoard, Is.EqualTo(listaSubmitted.IdBoard));
         }

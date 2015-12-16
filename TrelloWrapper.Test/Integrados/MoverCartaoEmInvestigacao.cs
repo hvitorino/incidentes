@@ -32,8 +32,8 @@ namespace TrelloWrapper.Test.Integrados
         {
             quadro.MoveCartaoParaEmResolucao(cartao);
 
-            var emResolucao = TrelloHelper.RecuperarLista(quadro.EmResolucao);
-            var cartaoTrello = TrelloHelper.RecuperarCartao(cartao);
+            var emResolucao = TrelloHelper.RecuperaLista(quadro.EmResolucao);
+            var cartaoTrello = TrelloHelper.RecuperaCartao(cartao);
 
             Assert.That(cartaoTrello, Is.Not.Null);
             Assert.That(cartaoTrello.IdList, Is.EqualTo(emResolucao.Id));
@@ -44,8 +44,8 @@ namespace TrelloWrapper.Test.Integrados
         {
             quadro.MoveCartaoParaPendencia(cartao);
 
-            var pendencia = TrelloHelper.RecuperarLista(quadro.Pendencia);
-            var cartaoTrello = TrelloHelper.RecuperarCartao(cartao);
+            var pendencia = TrelloHelper.RecuperaLista(quadro.Pendencia);
+            var cartaoTrello = TrelloHelper.RecuperaCartao(cartao);
 
             Assert.That(cartaoTrello, Is.Not.Null);
             Assert.That(cartaoTrello.IdList, Is.EqualTo(pendencia.GetListId()));

@@ -29,7 +29,7 @@ namespace TrelloWrapper.Test.Integrados.CriarCartao
         [Test]
         public void DevePossuirSeveridadeMedia()
         {
-            var card = TrelloHelper.RecuperarCartao(cartao);
+            var card = TrelloHelper.RecuperaCartao(cartao);
 
             Assert.That(card.LabelColors, Contains.Item(Color.Orange));
         }
@@ -38,7 +38,7 @@ namespace TrelloWrapper.Test.Integrados.CriarCartao
         [Ignore("Muito trabalho pra pouco retorno")]
         public void DeveSerPostoEmInvestigacaoEm5Horas()
         {
-            var card = TrelloHelper.RecuperarCartao(cartao);
+            var card = TrelloHelper.RecuperaCartao(cartao);
             var prazo = card.Due.Value.Subtract(cartao.DataSubmissao).Hours;
 
             Assert.That(prazo, Is.EqualTo(5));

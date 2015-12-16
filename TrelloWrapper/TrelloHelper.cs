@@ -6,7 +6,7 @@ namespace TrelloWrapper
 {
     public static class TrelloHelper
     {
-        public static Card RecuperarCartao(Cartao cartao)
+        public static Card RecuperaCartao(Cartao cartao)
         {
             var trello = TrelloFactory.API;
 
@@ -19,7 +19,7 @@ namespace TrelloWrapper
             return trello.Cards.WithShortId(cartao.IdShortTrello, new BoardId(board.Id));
         }
 
-        public static List RecuperarLista(Lista lista)
+        public static List RecuperaLista(Lista lista)
         {
             var trello = TrelloFactory.API;
 
@@ -34,7 +34,7 @@ namespace TrelloWrapper
                 .SingleOrDefault();
         }
 
-        public static void ExcluirCartoes(Quadro quadro)
+        public static void ExcluiCartoes(Quadro quadro)
         {
             var trello = TrelloFactory.API;
 

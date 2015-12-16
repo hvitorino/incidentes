@@ -17,7 +17,7 @@ namespace TrelloWrapper.Test.Integrados
         [OneTimeTearDown]
         public void DesfazCenario()
         {
-            TrelloHelper.ExcluirCartoes(quadro);
+            TrelloHelper.ExcluiCartoes(quadro);
         }
     }
 }
